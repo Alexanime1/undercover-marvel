@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undercover Marvel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#E8002D;--red-dim:rgba(232,0,45,0.15);
+  --gold:#F0A500;--gold-dim:rgba(240,165,0,0.12);
+  --dark:#09090E;--surface:#111118;--surface2:#18181F;--surface3:#1F1F28;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --text:#EDEAE2;--muted:#6A6A7E;--muted2:#4A4A5C;
+}
+html,body{background:var(--dark);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
+body{display:flex;align-items:flex-start;justify-content:center;padding:32px 20px 60px}
+.wrap{width:100%;max-width:460px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:58px;letter-spacing:3px;line-height:1;color:var(--text)}
+.logo em{color:var(--red);font-style:normal}
+.sub{font-size:11px;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-top:6px}
+hr.div{border:none;border-top:1px solid var(--border);margin:28px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;margin-bottom:12px}
+.section-label{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.counter-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+.counter-row:last-child{border-bottom:none;padding-bottom:0}
+.counter-row:first-of-type{padding-top:0}
+.counter-label{font-size:15px;color:var(--text)}
+.counter-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.counter-ctrl{display:flex;align-items:center;gap:16px}
+.c-btn{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;font-family:'DM Sans',sans-serif}
+.c-btn:hover{background:var(--surface3);border-color:rgba(255,255,255,0.2)}
+.c-btn:active{transform:scale(.93)}
+.c-val{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:1px;color:var(--text);min-width:20px;text-align:center}
+.player-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.player-row:last-child{margin-bottom:0}
+.player-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--muted2);width:22px;flex-shrink:0;text-align:right}
+.player-input{flex:1;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:11px 16px;font-size:15px;color:var(--text);font-family:'DM Sans',sans-serif;outline:none;transition:border .2s}
+.player-input::placeholder{color:var(--muted2)}
+.player-input:focus{border-color:rgba(255,255,255,0.25)}
+.btn{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;padding:14px 28px;border-radius:100px;cursor:pointer;border:none;transition:all .2s;letter-spacing:.02em;display:inline-block}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:#c8001f}
+.btn-primary:disabled{background:var(--muted2);cursor:not-allowed;opacity:.6}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border2)}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.btn-block{display:block;width:100%;text-align:center}
+.pill{font-size:12px;padding:5px 14px;border-radius:100px;font-weight:500;letter-spacing:.03em}
+.pill-civil{background:var(--gold-dim);color:var(--gold)}
+.pill-spy{background:var(--red-dim);color:var(--red)}
+.step-dots{display:flex;gap:5px;margin-bottom:24px;flex-wrap:wrap}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--muted2);transition:background .3s}
+.dot.active{background:var(--red)}
+.dot.done{background:var(--muted)}
+.secret-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:32px 24px;text-align:center;transition:filter .4s ease;user-select:none}
+.secret-card.blurred{filter:blur(10px);pointer-events:none}
+.secret-card.revealed{filter:blur(0)}
+.perso-name{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:2px;color:var(--text);line-height:1.1;margin-top:8px}
+.result-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:8px}
+.result-row.is-spy{border-color:rgba(232,0,45,0.35);background:rgba(232,0,45,0.06)}
+.avatar{width:38px;height:38px;border-radius:50%;background:var(--surface3);border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--muted);flex-shrink:0}
+.link-block{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-top:16px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.anim{animation:fadeUp .3s ease forwards}
+.screen{display:none}
+.screen.active{display:block}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- SETUP -->
+<div class="screen active" id="s-setup">
+  <div class="logo">UNDER<em>COVER</em></div>
+  <div class="sub">Marvel Edition</div>
+  <hr class="div">
+  <div class="card">
+    <div class="section-label">Composition de la partie</div>
+    <div class="counter-row">
+      <div>
+        <div class="counter-label">Civils</div>
+        <div class="counter-sub">Partagent le même personnage</div>
+      </div>
+      <div class="counter-ctrl">
+        <button class="c-btn" onclick="change('civil',-1)">−</button>
+        <span class="c-val" id="val-civil">2</span>
+        <button class="c-btn" onclick="change('civil',1)">+</button>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div>
+        <div class="counter-label">Imposteurs</div>
+        <div class="counter-sub">Personnage lié mais différent</div>
+      </div>
+      <div class="counter-ctrl">
+        <button class="c-btn" onclick="change('spy',-1)">−</button>
+        <span class="c-val" id="val-spy">1</span>
+        <button class="c-btn" onclick="change('spy',1)">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-label">Prénoms des joueurs</div>
+    <div id="name-inputs"></div>
+  </div>
+  <button class="btn btn-primary btn-block" id="btn-start" onclick="goToGame()" disabled>Distribuer les rôles →</button>
+</div>
+
+<!-- DEAL -->
+<div class="screen" id="s-deal">
+  <div class="logo" style="font-size:38px">UNDER<em>COVER</em></div>
+  <hr class="div">
+  <div id="deal-content"></div>
+</div>
+
+<!-- READY -->
+<div class="screen" id="s-ready">
+  <div class="logo" style="font-size:38px">C'EST<em> PARTI</em></div>
+  <hr class="div">
+  <p style="font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:28px">Tout le monde a son personnage.<br>La partie peut commencer — chacun dit ses mots à l'oral, puis vous votez.</p>
+  <button class="btn btn-ghost btn-block" style="margin-bottom:10px" id="btn-reveal" onclick="showReveal()">Révéler les rôles</button>
+  <button class="btn btn-primary btn-block" onclick="newGame()">Nouvelle partie</button>
+  <div id="reveal-zone"></div>
+</div>
+
+</div>
+
+<script>
+const pairs=[
+  {civil:"Spider-Man",imposteur:"Black Widow",lien:"Agents sans armure comptant sur agilité et ruse — deux icônes de New York"},
+  {civil:"Iron Man",imposteur:"War Machine",lien:"Deux armures Stark, Tony et son meilleur ami Rhodey"},
+  {civil:"Thor",imposteur:"Loki",lien:"Frères d'Asgard, fils d'Odin, ennemis puis alliés"},
+  {civil:"Captain America",imposteur:"Bucky Barnes",lien:"Soldats de la Seconde Guerre mondiale, amis de toujours"},
+  {civil:"Black Panther",imposteur:"Killmonger",lien:"Deux princes du Wakanda revendiquant la couronne"},
+  {civil:"Hulk",imposteur:"Bruce Banner",lien:"Le même homme — génie discret et monstre de rage"},
+  {civil:"Doctor Strange",imposteur:"Wong",lien:"Deux Maîtres Suprêmes des arts mystiques de Kamar-Taj"},
+  {civil:"Wanda Maximoff",imposteur:"Vision",lien:"Deux êtres liés par l'énergie de la Pierre de l'Esprit"},
+  {civil:"Hawkeye",imposteur:"Kate Bishop",lien:"Archer légendaire et son héritière à l'arc"},
+  {civil:"Ant-Man",imposteur:"Wasp",lien:"Duo de héros au costume rétrécissant du laboratoire Pym"},
+  {civil:"Nick Fury",imposteur:"Maria Hill",lien:"Deux directeurs du S.H.I.E.L.D., maîtres du secret"},
+  {civil:"Rocket",imposteur:"Groot",lien:"Gardiens inséparables — le raton laveur et l'arbre parlant"},
+  {civil:"Star-Lord",imposteur:"Yondu",lien:"Peter Quill et son père adoptif Ravageur"},
+  {civil:"Black Widow",imposteur:"Yelena Belova",lien:"Deux Veuves Noires formées dans le même programme Red Room"},
+  {civil:"Shang-Chi",imposteur:"Xu Wenwu",lien:"Fils et père, héritiers des Dix Anneaux"},
+  {civil:"Moon Knight",imposteur:"Khonshu",lien:"L'avatar mortel et son dieu lunaire manipulateur"},
+  {civil:"Daredevil",imposteur:"Kingpin",lien:"Les deux maîtres de Hell's Kitchen"},
+  {civil:"Wolverine",imposteur:"Sabretooth",lien:"Deux mutants aux griffes adamantium, rivaux éternels"},
+  {civil:"Professor X",imposteur:"Magneto",lien:"Fondateurs des mutants aux idéaux radicalement opposés"},
+  {civil:"Jean Grey",imposteur:"Cyclope",lien:"Deux X-Men leaders, amants et piliers de l'équipe"},
+  {civil:"Deadpool",imposteur:"Cable",lien:"Mercenaire immortel et soldat du futur, duo improbable"},
+  {civil:"She-Hulk",imposteur:"Hulk",lien:"Jennifer Walters et son cousin Bruce — même sang gamma"},
+  {civil:"Luke Cage",imposteur:"Iron Fist",lien:"Deux Défenseurs de New York, associés et frères d'armes"},
+  {civil:"Jessica Jones",imposteur:"Trish Walker",lien:"Deux femmes aux capacités extraordinaires, meilleures amies"},
+  {civil:"Ghost Rider",imposteur:"Mephisto",lien:"L'esprit de vengeance lié au diable par un pacte maudit"},
+  {civil:"Ms. Marvel",imposteur:"Captain Marvel",lien:"Deux héroïnes liées par l'énergie cosmique Kree"},
+  {civil:"Adam Warlock",imposteur:"Gamora",lien:"Deux êtres créés par les Souverains, Gardiens de la Galaxie"},
+  {civil:"Agatha Harkness",imposteur:"Wanda Maximoff",lien:"Deux sorcières de chaos rivalisant pour le Darkhold"},
+  {civil:"Sam Wilson",imposteur:"John Walker",lien:"Deux hommes qui ont porté le bouclier de Captain America"},
+  {civil:"Loki",imposteur:"Sylvie",lien:"Deux variantes Loki, dieu de la ruse face à face"},
+  {civil:"Nebula",imposteur:"Gamora",lien:"Deux sœurs adoptives de Thanos aux destins entrelacés"},
+  {civil:"Okoye",imposteur:"Shuri",lien:"Deux guerrières du Wakanda protégeant leur nation"},
+  {civil:"The Punisher",imposteur:"Daredevil",lien:"Deux justiciers de New York aux méthodes opposées"},
+  {civil:"Pepper Potts",imposteur:"Iron Man",lien:"Rescue et Iron Man — deux armures Stark, un même amour"},
+  {civil:"Storm",imposteur:"Jean Grey",lien:"Deux X-Women aux pouvoirs cosmiques, piliers de l'équipe"},
+  {civil:"Thanos",imposteur:"Gamora",lien:"Père adoptif et fille, deux faces du Gant de l'Infini"},
+  {civil:"Scarlet Witch",imposteur:"Quicksilver",lien:"Jumeaux Maximoff, deux enfants de la tragédie mutante"},
+  {civil:"Drax",imposteur:"Thanos",lien:"Le destructeur et le titan — vendetta et puissance cosmique"},
+  {civil:"Mantis",imposteur:"Star-Lord",lien:"Deux enfants d'Ego, liés par les mêmes origines célestes"},
+  {civil:"Vision",imposteur:"Ultron",lien:"Création et créateur — deux IA nées du même code"},
+  {civil:"Winter Soldier",imposteur:"Captain America",lien:"Deux soldats du passé revenus dans le présent"},
+  {civil:"Wong",imposteur:"Doctor Strange",lien:"Deux gardiens des arts mystiques et de la Sanctum Sanctorum"},
+  {civil:"Valkyrie",imposteur:"Thor",lien:"Deux Asgardiennes liées par la légende et le combat"},
+  {civil:"Falcon",imposteur:"War Machine",lien:"Deux soldats américains aux ailes mécaniques au service des Avengers"},
+  {civil:"Robbie Reyes",imposteur:"Johnny Blaze",lien:"Deux Ghost Riders liés par la malédiction du crâne de feu"},
+  {civil:"Quentin Beck",imposteur:"Spider-Man",lien:"Mysterio et son ennemi masqué — illusion contre réalité"},
+  {civil:"Black Bolt",imposteur:"Medusa",lien:"Roi et reine des Inhumains d'Attilan"},
+  {civil:"Captain Marvel",imposteur:"Ronan",lien:"Deux guerriers Kree aux destins opposés"},
+  {civil:"Jane Foster",imposteur:"Thor",lien:"Deux porteurs de Mjolnir, liés par le destin et l'amour"},
+  {civil:"Hela",imposteur:"Thor",lien:"Deux enfants d'Odin, héritiers du trône d'Asgard"}
+];
+
+let civilCount=2,spyCount=1,usedIdx=[],game={};
+
+function shuffle(arr){return[...arr].sort(()=>Math.random()-.5)}
+
+function change(type,delta){
+  if(type==='civil') civilCount=Math.max(2,Math.min(8,civilCount+delta));
+  else spyCount=Math.max(1,Math.min(4,spyCount+delta));
+  document.getElementById('val-civil').textContent=civilCount;
+  document.getElementById('val-spy').textContent=spyCount;
+  buildInputs();
+}
+
+function buildInputs(){
+  const total=civilCount+spyCount;
+  const cont=document.getElementById('name-inputs');
+  const prev=[...cont.querySelectorAll('input')].map(i=>i.value);
+  cont.innerHTML='';
+  for(let i=0;i<total;i++){
+    const row=document.createElement('div');
+    row.className='player-row';
+    row.innerHTML=`<span class="player-num">${i+1}</span><input class="player-input" type="text" placeholder="Prénom joueur ${i+1}" maxlength="20" oninput="checkReady()" value="${prev[i]||''}">`;
+    cont.appendChild(row);
+  }
+  checkReady();
+}
+
+function checkReady(){
+  const inputs=[...document.querySelectorAll('.player-input')];
+  document.getElementById('btn-start').disabled=!inputs.every(i=>i.value.trim().length>0);
+}
+
+function initials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
+
+function getPair(){
+  if(usedIdx.length>=pairs.length) usedIdx=[];
+  const avail=pairs.map((_,i)=>i).filter(i=>!usedIdx.includes(i));
+  const idx=avail[Math.floor(Math.random()*avail.length)];
+  usedIdx.push(idx);
+  return pairs[idx];
+}
+
+function goToGame(){
+  const names=[...document.querySelectorAll('.player-input')].map(i=>i.value.trim());
+  const pair=getPair();
+  const shuffled=shuffle([...names]);
+  const spyIndices=shuffle([...Array(shuffled.length).keys()]).slice(0,spyCount);
+  game={pair,assignments:shuffled.map((name,i)=>({name,isSpy:spyIndices.includes(i),perso:spyIndices.includes(i)?pair.imposteur:pair.civil}))};
+  show('s-deal');
+  showDeal(0);
+}
+
+function showDeal(idx){
+  const cont=document.getElementById('deal-content');
+  const total=game.assignments.length;
+  if(idx>=total){show('s-ready');return;}
+  const a=game.assignments[idx];
+  const dots=Array.from({length:total},(_,i)=>`<div class="dot ${i<idx?'done':i===idx?'active':''}"></div>`).join('');
+  const isLast=idx===total-1;
+  cont.innerHTML=`<div class="anim">
+    <div class="step-dots">${dots}</div>
+    <div class="section-label">Joueur ${idx+1} sur ${total}</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:1px;margin-bottom:20px">${a.name}</div>
+    <div class="secret-card blurred" id="sc">
+      <div class="section-label" style="margin-bottom:6px">Ton personnage</div>
+      <div class="perso-name">${a.perso}</div>
+    </div>
+    <div style="margin-top:22px;display:flex;gap:12px;align-items:center">
+      <button class="btn btn-ghost" id="btn-voir" onclick="revealCard(${idx})">Appuyer pour voir</button>
+      <button class="btn btn-primary" id="btn-next" style="display:none" onclick="showDeal(${idx+1})">${isLast?'Terminer':'→ '+game.assignments[idx+1].name}</button>
+    </div>
+  </div>`;
+}
+
+function revealCard(idx){
+  document.getElementById('sc').classList.replace('blurred','revealed');
+  document.getElementById('btn-voir').style.display='none';
+  document.getElementById('btn-next').style.display='inline-block';
+}
+
+function showReveal(){
+  document.getElementById('btn-reveal').style.display='none';
+  document.getElementById('reveal-zone').innerHTML=`<hr class="div">
+    ${game.assignments.map(a=>`<div class="result-row ${a.isSpy?'is-spy':''}">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar">${initials(a.name)}</div>
+        <div>
+          <div style="font-size:14px;font-weight:500;color:var(--text)">${a.name}</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;color:${a.isSpy?'var(--red)':'var(--gold)'}">${a.perso}</div>
+        </div>
+      </div>
+      <span class="pill ${a.isSpy?'pill-spy':'pill-civil'}">${a.isSpy?'imposteur':'civil'}</span>
+    </div>`).join('')}
+    <div class="link-block">
+      <div class="section-label" style="margin-bottom:6px">Lien entre les personnages</div>
+      <div style="font-size:14px;color:var(--text);line-height:1.65">${game.pair.lien}</div>
+    </div>`;
+}
+
+function newGame(){
+  show('s-setup');
+  document.getElementById('reveal-zone').innerHTML='';
+  document.getElementById('btn-reveal').style.display='block';
+}
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+buildInputs();
+</script>
+</body>
+</html>
